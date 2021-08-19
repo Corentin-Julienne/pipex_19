@@ -6,15 +6,15 @@
 /*   By: cjulienn <cjulienn@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 12:22:31 by cjulienn          #+#    #+#             */
-/*   Updated: 2021/08/17 12:23:45 by cjulienn         ###   ########.fr       */
+/*   Updated: 2021/08/19 15:52:09 by cjulienn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include "utils.h"
 
 static	void	ft_free_memory(char **split, size_t w_c)
 {

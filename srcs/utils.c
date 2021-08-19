@@ -6,14 +6,15 @@
 /*   By: cjulienn <cjulienn@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 11:52:51 by cjulienn          #+#    #+#             */
-/*   Updated: 2021/08/16 16:17:44 by cjulienn         ###   ########.fr       */
+/*   Updated: 2021/08/19 15:52:03 by cjulienn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <string.h>
+#include "utils.h"
 
 void	ft_strdel(char	**str) // a implementer dans libft
 {
@@ -44,3 +45,32 @@ void	ft_putstr_fd(char *s, int fd)
 		}
 	}
 }
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char			*copy;
+	size_t			i;
+	size_t			j;
+
+	if (!s1 || !s2)
+		return (NULL);
+	copy = malloc((strlen(s1) + strlen(s2) + 1) * (sizeof(char)));
+	if (!(copy))
+		return (NULL);
+	i = 0;
+	while (s1[i])
+	{
+		copy[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j])
+	{
+		copy[i] = s2[j];
+		i++;
+		j++;
+	}
+	copy[i] = '\0';
+	return (copy);
+}
+

@@ -6,32 +6,62 @@
 /*   By: cjulienn <cjulienn@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 13:39:46 by cjulienn          #+#    #+#             */
-/*   Updated: 2021/08/17 17:18:40 by cjulienn         ###   ########.fr       */
+/*   Updated: 2021/08/19 18:14:45 by cjulienn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "utils.h" // to suppress after
+// #include "../includes/pipex.h" do it later
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
+
+int	retrieve_path(char	*envp_part)
+{
+	int		score = 0;
+
+	if (envp_part[0] == 'P')
+		score++;
+	if (envp_part[1] == 'A')
+		score++;
+	if (envp_part[2] == 'T')
+		score++;
+	if (envp_part[3] == 'H')
+		score++;
+	if (score == 4)
+		return (1);
+	else
+		return (0);
+}
 
 void	process_child_1(int fd_1, int *pipe_arr, char **argv, char **envp) // manage input
 {
 	char	**paths;
 	char	**cmds;
 	char	*cmd;
-	char	*tmp;
+	char	*path;
+	// char	*tmp;
 	int		i;
 
+	printf("Going to process child 1\n");
 	// dupping phase
-	dup2(fd_1, STDIN_FILENO);
-	dup2(pipe_arr[1], STDOUT_FILENO);
 	close(pipe_arr[0]);
+	dup2(fd_1, STDIN_FILENO);
+	dup2(pipe_arr[1], STDOUT_FILENO); // line seems to exit the process !!!!!!!!!
+	printf("Going this far\n");
+	// close(pipe_arr[1]); a voir si necessaire
 	close(fd_1);
 	// parsing phase
-	paths = ft_split(envp, ":");
-	cmds = ft_split(argv[2], " ");
+	i = 0;
+	while (envp[i] && retrieve_path(envp[i]) == 0)
+	{
+		if(retrieve_path(envp[i]) == 1)
+			path = envp[i] + (5 * sizeof(char));
+		i++;
+	}
+	paths = ft_split(path, ':');	
+	cmds = ft_split(argv[2], ' ');
 	i = 0;
 	while (paths++)
 	{
@@ -40,7 +70,8 @@ void	process_child_1(int fd_1, int *pipe_arr, char **argv, char **envp) // manag
 		execve(cmd, cmds, envp);
 		free(cmd);
 	}
-	return (EXIT_FAILURE);	
+	printf("error : invalid path\n");
+	exit(0);	
 }
 
 void	process_child_2(int fd_2, int *pipe_arr, char **argv, char **envp) // manage output
@@ -48,16 +79,18 @@ void	process_child_2(int fd_2, int *pipe_arr, char **argv, char **envp) // manag
 	char	**paths;
 	char	**cmds;
 	char	*cmd;
-	char	*tmp;
+
+	printf("Going to process child 2\n");
+	// char	*tmp;
 	int		i;
 	// dupping phase
+	close(pipe_arr[1]);
 	dup2(fd_2, STDOUT_FILENO);
 	dup2(pipe_arr[0], STDIN_FILENO);
-	close(pipe_arr[1]);
 	close(fd_2);
 	// parsing phase
-	paths = ft_split(envp, ":");
-	cmds = ft_split(argv[3], " ");
+	paths = ft_split(envp[0] + 5, ':');
+	cmds = ft_split(argv[3], ' ');
 	i = 0;
 	while (paths++)
 	{
@@ -66,7 +99,8 @@ void	process_child_2(int fd_2, int *pipe_arr, char **argv, char **envp) // manag
 		execve(cmd, cmds, envp);
 		free(cmd);
 	}
-	return (EXIT_FAILURE);
+	printf("error : invalid stuff in child process 2\n");
+	exit(0);
 }
 
 void	pipex(int fd_1, int fd_2, char **argv, char **envp)
@@ -80,9 +114,11 @@ void	pipex(int fd_1, int fd_2, char **argv, char **envp)
 	pipe_output = pipe(pipe_arr);
 	if (pipe_output == -1)
 	{
-		ft_putstr_fd("Error !\n", 2); // change error message or even function using perror
+		ft_putstr_fd("Error ! : pipe has failed !\n", 2); // change error message or even function using perror
 		exit (0); // change exit argument
 	}
+	else if (pipe_output == 0) // kill after testing phase
+		printf("pipe succesfully initiated\n");
 	proc_child_1 = fork(); // fork does not take arguments
 	if (proc_child_1 < 0)
          return (perror("Forking error : "));
@@ -109,16 +145,17 @@ int	main(int argc, char **argv, char **envp)
 	
 	if (argc != 5) // if wrong number of arguments, retrun an error message and -1
 	{
-		ft_putstr_fd("Error !\n", 2); // change error message or even function using perror
+		ft_putstr_fd("Error ! : wrong number of arguments\n", 2); // change error message or even function using perror
 		return (0);
 	}
 	fd_1 = open(argv[1], O_RDONLY); // new fd with infile open as read only
 	fd_2 = open(argv[4], O_RDWR | O_CREAT | O_TRUNC); // a voir pour rajouter chmod 
 	if (fd_2 == -1 | fd_1 == -1)
 	{
-		ft_putstr_fd("Error !\n", 2); // change error message or even function using perror
+		ft_putstr_fd("Error !\n : Unable to open fd_1 or fd_2", 2); // change error message or even function using perror
 		return (-1);
-	}
-	void pipex(fd_1, fd_2, argv, envp);
+	} // seems Ok to this point
+	pipex(fd_1, fd_2, argv, envp);
+	(void)envp; // pour passer les warnings
 	return (0);
 }

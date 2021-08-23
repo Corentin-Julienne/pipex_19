@@ -5,45 +5,40 @@
 #                                                     +:+ +:+         +:+      #
 #    By: cjulienn <cjulienn@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/08/23 17:55:02 by cjulienn          #+#    #+#              #
-#    Updated: 2021/08/23 18:39:40 by cjulienn         ###   ########.fr        #
+#    Created: 2021/08/10 13:39:17 by cjulienn          #+#    #+#              #
+#    Updated: 2021/08/23 17:21:33 by cjulienn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
 
-SRCS = ./srcs/pipex.c \
-	   ./srcs/errors.c \
-	   ./srcs/free.c
+SRCS = ./pipex.c \
+	   ./utils.c \
+	   ./utils_2.c
 
 OBJS = $(SRCS:.c=.o)
 
-INCLUDE_PATH = ./includes/
-LIBFT_LIB = libft.a
-
-LIBFT_PATH = ./libft/
-
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -I$(INCLUDE_PATH)
+CFLAGS = -Wall -Wextra -Werror -I.
 
-RM = rm -rf
+RM = rm -f
+
+.c.o:
+	$(CC) $(CFLAGS) -c $< -o ${<:.c=.o}
 
 $(NAME): $(OBJS)
-	$(MAKE) -C $(LIBFT_PATH)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
-	@echo pipex successfully made !!!
+	@echo pipex program successfully made !!!
 
 all: 
 	$(NAME)
 
 clean:
-	$(MAKE) -C $(LIBFT_PATH)
-	$(RM) $(OBJS)
-	
+	$(RM) *.o
+
 fclean:	clean
-	$(MAKE) -C $(LIBFT_PATH) fclean
 	$(RM) $(NAME)
 
-re:	fclean all
+tmp: all clean
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean tmp

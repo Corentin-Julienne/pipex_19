@@ -1,3 +1,1 @@
-56175774-775A-4464-A057-DE7676B833E9wc -c
-(null)
-(null)
+error : invalid stuff in child process 2

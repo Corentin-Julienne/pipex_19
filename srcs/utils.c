@@ -6,14 +6,10 @@
 /*   By: cjulienn <cjulienn@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 11:52:51 by cjulienn          #+#    #+#             */
-/*   Updated: 2021/08/19 15:52:03 by cjulienn         ###   ########.fr       */
+/*   Updated: 2021/08/23 16:44:59 by cjulienn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
 #include "utils.h"
 
 void	ft_strdel(char	**str) // a implementer dans libft

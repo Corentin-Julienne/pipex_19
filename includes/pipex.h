@@ -6,16 +6,14 @@
 /*   By: cjulienn <cjulienn@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 13:39:06 by cjulienn          #+#    #+#             */
-/*   Updated: 2021/08/23 18:31:15 by cjulienn         ###   ########.fr       */
+/*   Updated: 2021/08/23 19:34:51 by cjulienn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-#include "../libft/vanilla_libft/libft_vanilla.h"
-#include "../libft/gnl_libft/get_next_line.h"
-#include "../libft/ft_printf_libft/ft_printf.h"
+#include "../libft/libft.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>

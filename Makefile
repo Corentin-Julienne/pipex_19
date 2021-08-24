@@ -6,7 +6,7 @@
 #    By: cjulienn <cjulienn@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/23 17:55:02 by cjulienn          #+#    #+#              #
-#    Updated: 2021/08/23 18:39:40 by cjulienn         ###   ########.fr        #
+#    Updated: 2021/08/23 19:52:31 by cjulienn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,19 +30,21 @@ RM = rm -rf
 
 $(NAME): $(OBJS)
 	$(MAKE) -C $(LIBFT_PATH)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	cp ./libft/libft.a .
+	$(CC) $(CFLAGS) $(OBJS) -L. -lft -o $(NAME)
 	@echo pipex successfully made !!!
 
 all: 
 	$(NAME)
 
 clean:
-	$(MAKE) -C $(LIBFT_PATH)
+	$(MAKE) -C $(LIBFT_PATH) clean
 	$(RM) $(OBJS)
 	
 fclean:	clean
 	$(MAKE) -C $(LIBFT_PATH) fclean
 	$(RM) $(NAME)
+	$(RM) libft.a
 
 re:	fclean all
 

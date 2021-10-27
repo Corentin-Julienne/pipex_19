@@ -6,7 +6,7 @@
 #    By: cjulienn <cjulienn@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/23 17:55:02 by cjulienn          #+#    #+#              #
-#    Updated: 2021/08/23 19:52:31 by cjulienn         ###   ########.fr        #
+#    Updated: 2021/10/27 11:44:08 by cjulienn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME = pipex
 
 SRCS = ./srcs/pipex.c \
 	   ./srcs/errors.c \
-	   ./srcs/free.c
+	   ./srcs/paths.c \
+	   ./srcs/init_struct.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -26,7 +27,7 @@ LIBFT_PATH = ./libft/
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -I$(INCLUDE_PATH)
 
-RM = rm -rf
+RM = rm -f
 
 $(NAME): $(OBJS)
 	$(MAKE) -C $(LIBFT_PATH)
